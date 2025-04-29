@@ -1,14 +1,17 @@
-package com.xiaoxing.train;
+package com.xiaoxing;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class TrainApplication {
+@Slf4j
+public class MemberApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TrainApplication.class, args);
+        SpringApplication.run(MemberApplication.class, args);
+        log.info("启动成功  ！");
     }
 
 }
