@@ -1,6 +1,8 @@
-package com.xiaoxing.train.member.aspect;
+package com.xiaoxing.train.common.aspect;
 
 import com.google.gson.Gson;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,16 +12,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @Aspect
 @Component
 public class WebLogAspect {
     private final static Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
-    /** 以 controller 包下定义的所有请求为切入点 */
+
+    /**
+     * 以 controller 包下定义的所有请求为切入点
+     */
     @Pointcut("execution(public * *..controller..*.*(..))")
-    public void webLog() {}
+    public void webLog() {
+    }
+
     /**
      * 在切点之前织入
+     *
      * @param joinPoint
      * @throws Throwable
      */
@@ -39,10 +48,23 @@ public class WebLogAspect {
         // 打印请求的 IP
         logger.info("IP             : {}", request.getRemoteAddr());
         // 打印请求入参
-        logger.info("Request Args   : {}", new Gson().toJson(joinPoint.getArgs()));
+        // 排除特殊类型的参数，如文件类型
+        Object[] args = joinPoint.getArgs();
+        Object[] arguments = new Object[args.length];
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof ServletRequest
+                    || args[i] instanceof ServletResponse
+                    || args[i] instanceof MultipartFile) {
+                continue;
+            }
+            arguments[i] = args[i];
+        }
+        logger.info("Request Args   : {}", new Gson().toJson(arguments));
     }
+
     /**
      * 在切点之后织入
+     *
      * @throws Throwable
      */
     @After("webLog()")
@@ -51,8 +73,10 @@ public class WebLogAspect {
         // 每个请求之间空一行
         logger.info("");
     }
+
     /**
      * 环绕
+     *
      * @param proceedingJoinPoint
      * @return
      * @throws Throwable
