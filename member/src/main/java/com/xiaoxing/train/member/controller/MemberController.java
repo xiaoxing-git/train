@@ -2,6 +2,10 @@ package com.xiaoxing.train.member.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xiaoxing.train.common.aspect.exception.BusinessException;
+import com.xiaoxing.train.common.aspect.result.BaseResponse;
+import com.xiaoxing.train.common.aspect.result.ErrorCode;
+import com.xiaoxing.train.common.aspect.result.ResultUtils;
 import com.xiaoxing.train.member.domain.Member;
 import com.xiaoxing.train.member.service.MemberService;
 import jakarta.annotation.Resource;
@@ -26,13 +30,13 @@ public class MemberController {
      * @return 会员id
      */
     @GetMapping("/register/{mobile}")
-    public long register(@PathVariable String mobile){
+    public BaseResponse<Long> register(@PathVariable String mobile){
         //判断手机号是否已经注册过了
         QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("mobile",mobile);
         Member one = memberService.getOne(queryWrapper);
         if (one!=null){
-            throw new RuntimeException("该账号已注册");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"手机号未注册");
         }
         //未注册，进行注册
         Member member = new Member();
@@ -43,6 +47,6 @@ public class MemberController {
         if (!saved){
             throw new RuntimeException("注册失败");
         }
-        return member.getId();
+        return ResultUtils.success(member.getId());
     }
 }
