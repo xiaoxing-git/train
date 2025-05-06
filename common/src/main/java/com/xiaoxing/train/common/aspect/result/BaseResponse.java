@@ -3,6 +3,7 @@ package com.xiaoxing.train.common.aspect.result;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 通用返回类
@@ -31,11 +32,23 @@ public class BaseResponse<T> implements Serializable {
      */
     private String description;
 
+    /**
+     * 异常描述列表
+     */
+    private List descriptionList;
+
     public BaseResponse(int code, T data, String message, String description) {
         this.code = code;
         this.data = data;
         this.message = message;
         this.description = description;
+    }
+
+    public BaseResponse(int code, T data, String message, List<Exception> descriptionList) {
+        this.code = code;
+        this.data = data;
+        this.message = message;
+        this.descriptionList = descriptionList;
     }
 
     public BaseResponse(int code, T data, String message) {

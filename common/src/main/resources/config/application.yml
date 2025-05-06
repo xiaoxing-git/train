@@ -1,6 +1,6 @@
-# 公共配置
-#mybatis-plus配置
+#公共配置
+# mybatis-plus 配置
 mybatis-plus:
   configuration:
-    #map-underscore-to-camel-case: false
+    # map-underscore-to-camel-case: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
