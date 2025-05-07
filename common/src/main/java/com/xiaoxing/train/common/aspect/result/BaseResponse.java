@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * 通用返回类
- *
  */
 @Data
 public class BaseResponse<T> implements Serializable {

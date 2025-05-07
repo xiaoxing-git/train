@@ -5,7 +5,6 @@ import com.xiaoxing.train.common.aspect.result.ErrorCode;
 
 /**
  * 自定义异常类
- *
  */
 public class BusinessException extends RuntimeException {
 

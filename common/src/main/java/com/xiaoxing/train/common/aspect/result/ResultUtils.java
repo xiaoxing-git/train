@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * 返回工具类
- *
  */
 public class ResultUtils {
 
@@ -18,6 +17,7 @@ public class ResultUtils {
     public static <T> BaseResponse<T> success(T data) {
         return new BaseResponse<>(0, data, "ok");
     }
+
     public static <T> BaseResponse<T> success() {
         return new BaseResponse<>(0, null, "ok");
     }
@@ -62,7 +62,7 @@ public class ResultUtils {
      * @return
      */
     public static BaseResponse error(ErrorCode errorCode, String description) {
-        return new BaseResponse(errorCode.getCode(),null, description);
+        return new BaseResponse(errorCode.getCode(), null, description);
     }
 
     /**

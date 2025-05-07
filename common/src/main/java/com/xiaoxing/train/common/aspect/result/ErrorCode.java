@@ -3,7 +3,6 @@ package com.xiaoxing.train.common.aspect.result;
 
 /**
  * 错误码
- *
  */
 public enum ErrorCode {
 

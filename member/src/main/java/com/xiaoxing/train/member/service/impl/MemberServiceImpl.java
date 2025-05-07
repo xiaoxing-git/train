@@ -1,5 +1,6 @@
 package com.xiaoxing.train.member.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -7,10 +8,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiaoxing.train.common.aspect.exception.BusinessException;
 import com.xiaoxing.train.common.aspect.result.ErrorCode;
 import com.xiaoxing.train.member.domain.Member;
+import com.xiaoxing.train.member.mapper.MemberMapper;
+import com.xiaoxing.train.member.req.MemberLoginRequest;
 import com.xiaoxing.train.member.req.MemberRegisterRequest;
 import com.xiaoxing.train.member.req.MemberSendCodeRequest;
+import com.xiaoxing.train.member.resp.MemberLoginResponse;
 import com.xiaoxing.train.member.service.MemberService;
-import com.xiaoxing.train.member.mapper.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +29,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public long register(MemberRegisterRequest mobile) {
         //判断手机号是否已经注册过了
-        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("mobile",mobile.getMobile());
-        Member one = getOne(queryWrapper);
-        if (one!=null){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"手机号已注册");
+        boolean exist = exist(mobile.getMobile());
+        if (exist) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "手机号已注册");
         }
         //未注册，进行注册
         Member member = new Member();
@@ -38,7 +39,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         member.setId(id);
         member.setMobile(mobile.getMobile());
         boolean saved = save(member);
-        if (!saved){
+        if (!saved) {
             throw new RuntimeException("注册失败");
         }
         return member.getId();
@@ -47,10 +48,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public String sendCode(MemberSendCodeRequest mobile) {
         //判断手机号是否已经注册过了
-        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("mobile",mobile.getMobile());
-        Member one = getOne(queryWrapper);
-        if (one==null){
+        boolean exist = exist(mobile.getMobile());
+        if (!exist) {
             //未注册，进行注册
             log.info("未注册，进行注册");
             Member member = new Member();
@@ -58,12 +57,41 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             member.setId(id);
             member.setMobile(mobile.getMobile());
             boolean saved = save(member);
-            if (!saved){
+            if (!saved) {
                 throw new RuntimeException("注册失败");
             }
         }
         //发送验证码
         return RandomUtil.randomNumbers(4);
+    }
+
+    @Override
+    public MemberLoginResponse login(MemberLoginRequest loginRequest) {
+        //判断手机号是否已经注册过了
+        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("mobile", loginRequest.getMobile());
+        Member member = getOne(queryWrapper);
+        if (member == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "手机号未注册");
+
+        }
+        //校验验证码
+        if (!"8888".equals(loginRequest.getCode())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "验证码错误");
+        }
+        return BeanUtil
+                .copyProperties(member, MemberLoginResponse.class);
+    }
+
+    private boolean exist(String mobile) {
+        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("mobile", mobile);
+        Member one = getOne(queryWrapper);
+        if (one == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 

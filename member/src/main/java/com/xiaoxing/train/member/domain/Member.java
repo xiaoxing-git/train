@@ -6,9 +6,10 @@ import lombok.Data;
 
 /**
  * 会员表
+ *
  * @TableName member
  */
-@TableName(value ="member")
+@TableName(value = "member")
 @Data
 public class Member {
     /**
@@ -35,7 +36,7 @@ public class Member {
         }
         Member other = (Member) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getMobile() == null ? other.getMobile() == null : this.getMobile().equals(other.getMobile()));
+                && (this.getMobile() == null ? other.getMobile() == null : this.getMobile().equals(other.getMobile()));
     }
 
     @Override
