@@ -2,6 +2,8 @@ package com.xiaoxing.train.member.service;
 
 import com.xiaoxing.train.member.domain.Member;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xiaoxing.train.member.req.MemberRegisterRequest;
+import com.xiaoxing.train.member.req.MemberSendCodeRequest;
 
 /**
 * @author xiaoxing
@@ -9,5 +11,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-04 14:27:39
 */
 public interface MemberService extends IService<Member> {
+    /**
+     * 会员注册
+     * @param mobile
+     * @return
+     */
+    long register(MemberRegisterRequest mobile);
 
+    /**
+     * 发送验证码(伪)
+     * @param mobile
+     * @return
+     */
+    String sendCode(MemberSendCodeRequest mobile);
 }
