@@ -1,0 +1,25 @@
+package com.xiaoxing.train.common.util;
+
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.jwt.JWTPayload;
+
+import java.util.HashMap;
+
+public class JWTUtil {
+    public static final String key = "xiaoxing12306";
+    public static <T> String createToken(T obj){
+        DateTime now = DateTime.now();
+        DateTime offsetNew = now.offsetNew(DateField.HOUR, 24);
+        HashMap<String, Object> payload = new HashMap<>();
+        // 签发时间
+        payload.put(JWTPayload.ISSUED_AT,now);
+        // 过期时间
+        payload.put(JWTPayload.EXPIRES_AT,offsetNew);
+        // 生效时间
+        payload.put(JWTPayload.NOT_BEFORE,now);
+        // 内容
+        payload.put("data",obj);
+        return cn.hutool.jwt.JWTUtil.createToken(payload,key.getBytes());
+    }
+}
