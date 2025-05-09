@@ -1,7 +1,7 @@
-package com.xiaoxing.train.common.aspect.exception;
+package com.xiaoxing.train.common.exception;
 
 
-import com.xiaoxing.train.common.aspect.result.ErrorCode;
+import com.xiaoxing.train.common.result.ErrorCode;
 
 /**
  * 自定义异常类

@@ -1,7 +1,7 @@
 package com.xiaoxing.train.member.controller;
 
-import com.xiaoxing.train.common.aspect.result.BaseResponse;
-import com.xiaoxing.train.common.aspect.result.ResultUtils;
+import com.xiaoxing.train.common.result.BaseResponse;
+import com.xiaoxing.train.common.result.ResultUtils;
 import com.xiaoxing.train.member.req.MemberLoginRequest;
 import com.xiaoxing.train.member.req.MemberRegisterRequest;
 import com.xiaoxing.train.member.req.MemberSendCodeRequest;

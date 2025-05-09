@@ -1,6 +1,4 @@
-package com.xiaoxing.train.common.aspect.result;
-
-import java.util.List;
+package com.xiaoxing.train.common.result;
 
 /**
  * 返回工具类
@@ -65,13 +63,4 @@ public class ResultUtils {
         return new BaseResponse(errorCode.getCode(), null, description);
     }
 
-    /**
-     * 失败
-     *
-     * @param errorCode
-     * @return
-     */
-    public static BaseResponse errorList(ErrorCode errorCode, String message, List descriptionList) {
-        return new BaseResponse(errorCode.getCode(), null, message, descriptionList);
-    }
 }

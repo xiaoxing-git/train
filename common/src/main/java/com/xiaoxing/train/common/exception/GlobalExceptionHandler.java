@@ -1,16 +1,14 @@
-package com.xiaoxing.train.common.aspect.exception;
+package com.xiaoxing.train.common.exception;
 
 
-import com.xiaoxing.train.common.aspect.result.BaseResponse;
-import com.xiaoxing.train.common.aspect.result.ErrorCode;
-import com.xiaoxing.train.common.aspect.result.ResultUtils;
+import com.xiaoxing.train.common.result.BaseResponse;
+import com.xiaoxing.train.common.result.ErrorCode;
+import com.xiaoxing.train.common.result.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.stream.Collectors;
 
 /**
  * 全局异常处理器
@@ -35,10 +33,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public BaseResponse<?> bindExceptionHandler(BindException e) {
         log.error("bindException", e);
-        return ResultUtils.errorList(ErrorCode.PARAMS_ERROR, ErrorCode.PARAMS_ERROR.getMessage(),
+        return ResultUtils.error(ErrorCode.PARAMS_ERROR, ErrorCode.PARAMS_ERROR.getMessage(),
                 e.getBindingResult().getAllErrors()
                         .stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                        .collect(Collectors.toList()));
+                        .toList().toString());
     }
 }

@@ -3,10 +3,11 @@ package com.xiaoxing.train.member.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xiaoxing.train.common.aspect.exception.BusinessException;
-import com.xiaoxing.train.common.aspect.result.ErrorCode;
+import com.xiaoxing.train.common.exception.BusinessException;
+import com.xiaoxing.train.common.result.ErrorCode;
 import com.xiaoxing.train.member.domain.Member;
 import com.xiaoxing.train.member.mapper.MemberMapper;
 import com.xiaoxing.train.member.req.MemberLoginRequest;
@@ -16,6 +17,10 @@ import com.xiaoxing.train.member.resp.MemberLoginResponse;
 import com.xiaoxing.train.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+import static com.xiaoxing.train.common.constant.JWTToken.KEY;
 
 /**
  * @author xiaoxing
@@ -79,8 +84,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         if (!"8888".equals(loginRequest.getCode())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "验证码错误");
         }
-        return BeanUtil
+        MemberLoginResponse memberLoginResponse = BeanUtil
                 .copyProperties(member, MemberLoginResponse.class);
+        Map<String, Object> map = BeanUtil.beanToMap(memberLoginResponse);
+        String token = JWTUtil.createToken(map, KEY.getBytes());
+        memberLoginResponse.setToken(token);
+        return memberLoginResponse;
     }
 
     private boolean exist(String mobile) {
