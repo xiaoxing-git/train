@@ -41,8 +41,12 @@ public class JWTUtil {
         if (token==null||token.isBlank()){
             return false;
         }
-        JWT jwt = cn.hutool.jwt.JWTUtil.parseToken(token).setKey(key.getBytes());
-        return jwt.validate(0);
+        try {
+            JWT jwt = cn.hutool.jwt.JWTUtil.parseToken(token).setKey(key.getBytes());
+            return jwt.validate(0);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

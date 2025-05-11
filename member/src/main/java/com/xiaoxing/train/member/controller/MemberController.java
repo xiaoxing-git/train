@@ -18,8 +18,8 @@ public class MemberController {
     MemberService memberService;
 
     @GetMapping("/count")
-    public Long count() {
-        return memberService.count();
+    public BaseResponse<Long> count() {
+        return ResultUtils.success(memberService.count());
     }
 
     /**
