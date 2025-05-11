@@ -1,4 +1,5 @@
-package com.xiaoxing.train.common.util;
+package com.xiaoxing.util;
+
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
