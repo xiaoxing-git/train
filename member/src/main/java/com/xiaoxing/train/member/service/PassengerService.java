@@ -2,6 +2,7 @@ package com.xiaoxing.train.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xiaoxing.train.member.domain.Passenger;
+import com.xiaoxing.train.member.req.PassengerSaveRequest;
 
 
 /**
@@ -11,4 +12,10 @@ import com.xiaoxing.train.member.domain.Passenger;
 */
 public interface PassengerService extends IService<Passenger> {
 
+    /**
+     * 新增乘车人
+     * @param passengerSaveRequest
+     * @return
+     */
+    Passenger add(PassengerSaveRequest passengerSaveRequest);
 }

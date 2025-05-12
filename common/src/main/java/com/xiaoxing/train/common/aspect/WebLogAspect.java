@@ -1,6 +1,6 @@
 package com.xiaoxing.train.common.aspect;
 
-import com.google.gson.Gson;
+import cn.hutool.json.JSONUtil;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,7 +59,7 @@ public class WebLogAspect {
             }
             arguments[i] = args[i];
         }
-        logger.info("Request Args   : {}", new Gson().toJson(arguments));
+        logger.info("Request Args   : {}", JSONUtil.toJsonStr(arguments));
     }
 
     /**
@@ -85,8 +85,9 @@ public class WebLogAspect {
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
+
         // 打印出参
-        logger.info("Response Args  : {}", new Gson().toJson(result));
+        logger.info("Response Args  : {}", JSONUtil.toJsonStr(result));
         // 执行耗时
         logger.info("Time-Consuming : {} ms", System.currentTimeMillis() - startTime);
         return result;
