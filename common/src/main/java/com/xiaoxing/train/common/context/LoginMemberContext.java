@@ -18,7 +18,7 @@ public class LoginMemberContext {
         LoginMemberContext.memberContext = memberContext;
     }
 
-    public long getId(){
+    public static long getId(){
         try {
             return memberContext.get().getId();
         } catch (Exception e) {

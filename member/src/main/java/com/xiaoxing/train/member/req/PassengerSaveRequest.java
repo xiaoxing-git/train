@@ -1,7 +1,6 @@
 package com.xiaoxing.train.member.req;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -12,24 +11,23 @@ public class PassengerSaveRequest {
     /**
      * 会员id
      */
-    @NotNull
     private Long memberId;
 
     /**
      * 姓名
      */
-    @NotBlank
+    @NotBlank(message = "姓名不能为空")
     private String name;
 
     /**
      * 身份证号
      */
-    @NotBlank
+    @NotBlank(message = "身份证号不能为空")
     private String idCode;
 
     /**
      * 旅客类型
      */
-    @NotBlank
+    @NotBlank(message = "类型不能为空")
     private String type;
 }

@@ -51,11 +51,12 @@
                 <version>5.8.16</version>
             </dependency>
 
-            <!-- 引入mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <artifactId>mybatis-plus-bom</artifactId>
                 <version>3.5.12</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
